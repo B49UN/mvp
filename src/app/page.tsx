@@ -1,46 +1,133 @@
 "use client";
 import {useState} from "react";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch, { SwitchProps } from '@mui/material/Switch';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 
+
+const IOSSwitch = styled((props: SwitchProps) => (
+  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+))(({ theme }) => ({
+  width: 42,
+  height: 26,
+  padding: 0,
+  '& .MuiSwitch-switchBase': {
+    padding: 0,
+    margin: 2,
+    transitionDuration: '300ms',
+    '&.Mui-checked': {
+      transform: 'translateX(16px)',
+      color: '#fff',
+      '& + .MuiSwitch-track': {
+        backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#65C466',
+        opacity: 1,
+        border: 0,
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
+        opacity: 0.5,
+      },
+    },
+    '&.Mui-focusVisible .MuiSwitch-thumb': {
+      color: '#33cf4d',
+      border: '6px solid #fff',
+    },
+    '&.Mui-disabled .MuiSwitch-thumb': {
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.grey[100]
+          : theme.palette.grey[600],
+    },
+    '&.Mui-disabled + .MuiSwitch-track': {
+      opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+    },
+  },
+  '& .MuiSwitch-thumb': {
+    boxSizing: 'border-box',
+    width: 22,
+    height: 22,
+  },
+  '& .MuiSwitch-track': {
+    borderRadius: 26 / 2,
+    backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
+    opacity: 1,
+    transition: theme.transitions.create(['background-color'], {
+      duration: 500,
+    }),
+  },
+}));
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 export default function Home() {
   const [isHidden, setIsHidden] = useState(true);
-
   const toggleText = () => setIsHidden(!isHidden);
 
   return (
       <main className="center-content flex flex-col items-center justify-center p-4">
           <h1 className="text-3xl font-bold">ANSER</h1>
-        <button className="mt-4 p-2 bg-blue-500 text-white rounded" onClick={toggleText}>TEXT</button>
-        <button className="mt-4 p-2 bg-blue-500 text-white rounded"
-                onClick={() => (document.getElementById('fileInput') as HTMLInputElement)?.click()}>FILE
-        </button>
+        <FormGroup row>
+          <Button variant="contained" onClick={toggleText}>TEXT</Button>
+          <Button variant="contained"
+            onClick={() => (document.getElementById('fileInput') as HTMLInputElement)?.click()}>FILE</Button>
+          <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+          >
+            Upload file
+            <VisuallyHiddenInput type="file"/>
+          </Button>
+        </FormGroup>
+
         <input type="file" id="fileInput" className={`${isHidden ? 'hidden' : ''} mt-4`} accept=".pdf,image/*"
                onChange={(e) => console.log(e)}/>
         {isHidden ? null : (
-            <textarea id="userText" className="mt-4 p-2 border border-gray-300 rounded"
-                      placeholder="Enter text here..."></textarea>
+            <Box
+                component="form"
+                sx={{
+                  '& > :not(style)': { m: 1, width: '25ch' },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                  id="outlined-multiline-static"
+                  label="문장 입력 칸"
+                  multiline
+                  rows={4}
+                  //defaultValue="여기에 문장을 입력하세요."
+                />
+            </Box>
         )}
+
           <div className="flex mt-4">
 
-              <label className="inline-flex items-center cursor-pointer">
-                  <input type="checkbox" value="" className="sr-only peer"/>
-                  <div
-                      className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                  <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">학습모드</span>
-              </label>
-
-
-              <label className="inline-flex items-center cursor-pointer">
-                  <input type="checkbox" value="" className="sr-only peer"/>
-                  <div
-                      className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                  <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">학습지</span>
-              </label>
+              <FormGroup row>
+                  <FormControlLabel control={<IOSSwitch sx={{ m: 1 }} />} label={"학습모드"} />
+                  <FormControlLabel control={<IOSSwitch sx={{ m: 1 }} />} label={"학습지"} />
+              </FormGroup>
 
           </div>
+
           <div className="mt-4">
               <button className="p-2 bg-green-500 text-white rounded" onClick={() => console.log('submitData')}>Submit
               </button>
           </div>
+
       </main>
   );
 }
