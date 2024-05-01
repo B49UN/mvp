@@ -75,7 +75,8 @@ const VisuallyHiddenInput = styled('input')({
 export default function Home() {
   const [inputValue, setInputValue] = useState('');
   const [isHidden, setIsHidden] = useState(true);
-  const supabase = createClient("https://ddemkscuymbmverniybk.supabase.co/functions/v1/gpttest", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+  const supabaseFtn = createClient("https://ddemkscuymbmverniybk.supabase.co/functions/v1/gpttest", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+  const supabase = createClient();
   const toggleText = () => setIsHidden(!isHidden);
   const handleInputChange = (event: any) => {
     setInputValue(event.target.value);
@@ -83,7 +84,7 @@ export default function Home() {
 
   const handleSubmit = async () => {
     try {
-      const { data, error } = await supabase.functions.invoke('gpttest', {
+      const { data, error } = await supabaseFtn.functions.invoke('gpttest', {
         body: { sentence: inputValue }
       });
 
@@ -150,7 +151,7 @@ export default function Home() {
           </div>
 
           <div className="mt-4">
-            <Button href={'/result'} variant={'contained'} onClick={handleSubmit}>Submit</Button>
+            <Button href={"./study-mode"} variant={'contained'} >Submit</Button>
           </div>
 
       </main>
