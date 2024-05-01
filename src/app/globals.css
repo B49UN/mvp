@@ -36,7 +36,7 @@ nav{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: aqua;
+  background: deepskyblue;
   padding: 20px 80px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
 }
@@ -62,14 +62,14 @@ nav{
 }
 
 #navbar li a:hover{
-  color: blueviolet;
+  color: paleturquoise;
 }
 
 #navbar li a:hover::after{
   content: "";
   width: 30%;
   height: 2px;
-  background: blueviolet;
+  background: paleturquoise;
   position: absolute;
   bottom: -4px;
   left: 20px;

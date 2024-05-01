@@ -4,9 +4,10 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch, { SwitchProps } from '@mui/material/Switch';
-import { styled } from '@mui/material/styles';
+import Switch, {SwitchProps} from '@mui/material/Switch';
+import {styled} from '@mui/material/styles';
 import Button from '@mui/material/Button';
+import {createClient} from "@supabase/supabase-js";
 
 
 const IOSSwitch = styled((props: SwitchProps) => (
@@ -72,12 +73,35 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 export default function Home() {
+  const [inputValue, setInputValue] = useState('');
   const [isHidden, setIsHidden] = useState(true);
+  const supabase = createClient("https://ddemkscuymbmverniybk.supabase.co/functions/v1/gpttest", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
   const toggleText = () => setIsHidden(!isHidden);
+  const handleInputChange = (event: any) => {
+    setInputValue(event.target.value);
+  }
 
+  const handleSubmit = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('gpttest', {
+        body: { sentence: inputValue }
+      });
+
+      if (error) {
+        console.error('Error invoking Supabase function:', error);
+        return;
+      }
+
+      console.log('Data received from Supabase:', data);
+      localStorage.setItem('savedText', JSON.stringify(data));
+    } catch (err) {
+      console.error('An error occurred:', err);
+    }
+  }
   return (
       <main className="center-content flex flex-col items-center justify-center p-4">
           <h1 className="text-3xl font-bold">ANSER</h1>
+        // 굳이 버튼이 필요한가?
         <FormGroup row>
           <Button variant="contained" onClick={toggleText}>TEXT</Button>
           <Button variant="contained"
@@ -94,7 +118,7 @@ export default function Home() {
         </FormGroup>
 
         <input type="file" id="fileInput" className={`${isHidden ? 'hidden' : ''} mt-4`} accept=".pdf,image/*"
-               onChange={(e) => console.log(e)}/>
+          onChange={(e) => console.log(e)}/>
         {isHidden ? null : (
             <Box
                 component="form"
@@ -109,6 +133,8 @@ export default function Home() {
                   label="문장 입력 칸"
                   multiline
                   rows={4}
+                  value={inputValue}
+                  onChange={ handleInputChange }
                   //defaultValue="여기에 문장을 입력하세요."
                 />
             </Box>
@@ -124,8 +150,7 @@ export default function Home() {
           </div>
 
           <div className="mt-4">
-              <button className="p-2 bg-green-500 text-white rounded" onClick={() => console.log('submitData')}>Submit
-              </button>
+            <Button href={'/result'} variant={'contained'} onClick={handleSubmit}>Submit</Button>
           </div>
 
       </main>
