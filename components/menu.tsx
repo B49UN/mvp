@@ -21,10 +21,19 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Link from "next/link";
 
 
 export function Menu() {
-  const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
+    const items1 = [
+        { text: "Log-In", icon: <LoginIcon />, link: "/login" },
+        { text: "Sign-In", icon: <InsertEmoticonIcon />, link: "/register" },
+    ];
+    const items2 = [
+        { text: "Subscribe", icon: <AddReactionIcon />, link: "/" },
+        { text: "Settings", icon: <SettingsIcon />, link: "/" },
+    ];
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -32,39 +41,45 @@ export function Menu() {
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <List>
-        {['Log-In', 'Sign-In'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <LoginIcon /> : <InsertEmoticonIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['Subscribe', 'Settings'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <AddReactionIcon /> : <SettingsIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+        <List>
+            {items1.map((item) => (
+                <Link href={item.link}>
+                    <ListItem key={item.text} disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                {item.icon}
+                            </ListItemIcon>
+                            <ListItemText primary={item.text} />
+                        </ListItemButton>
+                    </ListItem>
+                </Link>
+            ))}
+        </List>
+        <Divider />
+        <List>
+            {items2.map((item) => (
+                <Link href={item.link}>
+                    <ListItem key={item.text} disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                {item.icon}
+                            </ListItemIcon>
+                            <ListItemText primary={item.text} />
+                        </ListItemButton>
+                    </ListItem>
+                </Link>
+            ))}
+        </List>
     </Box>
   );
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'flex-end', backgroundColor: '#1976d2' }}>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1, mx: 1, color: 'white' }}>
-            ANSER
-        </Typography>
+    <div style={{ display: 'flex', justifyContent: 'space-between', backgroundColor: '#1976d2' }}>
+        <Link href={"/"}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1, mx: 1, color: 'white' }}>
+                ANSER
+            </Typography>
+        </Link>
         <Button sx={{color: 'white'}} onClick={toggleDrawer(true)}><MenuIcon /></Button>
       <Drawer open={open} onClose={toggleDrawer(false)} anchor={'right'}>
         {DrawerList}

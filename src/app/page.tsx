@@ -76,7 +76,7 @@ export default function Home() {
   const [inputValue, setInputValue] = useState('');
   const [isHidden, setIsHidden] = useState(true);
   const supabaseFtn = createClient("https://ddemkscuymbmverniybk.supabase.co/functions/v1/gpttest", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
-  const supabase = createClient();
+  //const supabase = createClient();
   const toggleText = () => setIsHidden(!isHidden);
   const handleInputChange = (event: any) => {
     setInputValue(event.target.value);
