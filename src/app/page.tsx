@@ -84,8 +84,8 @@ export default function Home() {
 
   const handleSubmit = async () => {
     try {
-      const { data, error } = await supabaseFtn.functions.invoke('gpttest', {
-        body: { sentence: inputValue }
+      const {data, error} = await supabaseFtn.functions.invoke('gpttest', {
+        body: {sentence: inputValue}
       });
 
       if (error) {
@@ -101,7 +101,7 @@ export default function Home() {
   }
   return (
       <main className="center-content flex flex-col items-center justify-center p-4">
-          <h1 className="text-3xl font-bold">ANSER</h1>
+        <h1 className="text-3xl font-bold">ANSER</h1>
         // 굳이 버튼이 필요한가?
         <FormGroup row>
           <Button variant="contained" onClick={toggleText}>TEXT</Button>
