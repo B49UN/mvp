@@ -42,7 +42,7 @@ export function Menu() {
     const DrawerList = (
         <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
             <List>
-                {items1.map((item) => (
+                {items1.map((item, index) => (
                     <Link href={item.link}>
                         <ListItem key={item.text} disablePadding>
                             <ListItemButton>
@@ -57,7 +57,7 @@ export function Menu() {
             </List>
             <Divider/>
             <List>
-                {items2.map((item) => (
+                {items2.map((item, index) => (
                     <Link href={item.link}>
                         <ListItem key={item.text} disablePadding>
                             <ListItemButton>

@@ -11,149 +11,146 @@ import {createClient} from "@supabase/supabase-js";
 
 
 const IOSSwitch = styled((props: SwitchProps) => (
-  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
-))(({ theme }) => ({
-  width: 42,
-  height: 26,
-  padding: 0,
-  '& .MuiSwitch-switchBase': {
+    <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+))(({theme}) => ({
+    width: 42,
+    height: 26,
     padding: 0,
-    margin: 2,
-    transitionDuration: '300ms',
-    '&.Mui-checked': {
-      transform: 'translateX(16px)',
-      color: '#fff',
-      '& + .MuiSwitch-track': {
-        backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#65C466',
+    '& .MuiSwitch-switchBase': {
+        padding: 0,
+        margin: 2,
+        transitionDuration: '300ms',
+        '&.Mui-checked': {
+            transform: 'translateX(16px)',
+            color: '#fff',
+            '& + .MuiSwitch-track': {
+                backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#65C466',
+                opacity: 1,
+                border: 0,
+            },
+            '&.Mui-disabled + .MuiSwitch-track': {
+                opacity: 0.5,
+            },
+        },
+        '&.Mui-focusVisible .MuiSwitch-thumb': {
+            color: '#33cf4d',
+            border: '6px solid #fff',
+        },
+        '&.Mui-disabled .MuiSwitch-thumb': {
+            color:
+                theme.palette.mode === 'light'
+                    ? theme.palette.grey[100]
+                    : theme.palette.grey[600],
+        },
+        '&.Mui-disabled + .MuiSwitch-track': {
+            opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+        },
+    },
+    '& .MuiSwitch-thumb': {
+        boxSizing: 'border-box',
+        width: 22,
+        height: 22,
+    },
+    '& .MuiSwitch-track': {
+        borderRadius: 26 / 2,
+        backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
         opacity: 1,
-        border: 0,
-      },
-      '&.Mui-disabled + .MuiSwitch-track': {
-        opacity: 0.5,
-      },
+        transition: theme.transitions.create(['background-color'], {
+            duration: 500,
+        }),
     },
-    '&.Mui-focusVisible .MuiSwitch-thumb': {
-      color: '#33cf4d',
-      border: '6px solid #fff',
-    },
-    '&.Mui-disabled .MuiSwitch-thumb': {
-      color:
-        theme.palette.mode === 'light'
-          ? theme.palette.grey[100]
-          : theme.palette.grey[600],
-    },
-    '&.Mui-disabled + .MuiSwitch-track': {
-      opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
-    },
-  },
-  '& .MuiSwitch-thumb': {
-    boxSizing: 'border-box',
-    width: 22,
-    height: 22,
-  },
-  '& .MuiSwitch-track': {
-    borderRadius: 26 / 2,
-    backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
-    opacity: 1,
-    transition: theme.transitions.create(['background-color'], {
-      duration: 500,
-    }),
-  },
 }));
 
 const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
 });
 export default function Home() {
-  const [inputValue, setInputValue] = useState('');
-  const [isHidden, setIsHidden] = useState(true);
-  const supabaseFtn = createClient("https://ddemkscuymbmverniybk.supabase.co/functions/v1/gpttest", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
-  //const supabase = createClient();
-  const toggleText = () => setIsHidden(!isHidden);
-  const handleInputChange = (event: any) => {
-    setInputValue(event.target.value);
-  }
-
-  const handleSubmit = async () => {
-    try {
-      const {data, error} = await supabaseFtn.functions.invoke('gpttest', {
-        body: {sentence: inputValue}
-      });
-
-      if (error) {
-        console.error('Error invoking Supabase function:', error);
-        return;
-      }
-
-      console.log('Data received from Supabase:', data);
-      localStorage.setItem('savedText', JSON.stringify(data));
-    } catch (err) {
-      console.error('An error occurred:', err);
+    const [inputValue, setInputValue] = useState('');
+    const [isHidden, setIsHidden] = useState(true);
+    const supabaseFtn = createClient("https://ddemkscuymbmverniybk.supabase.co/functions/v1/gpttest", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+    const toggleText = () => setIsHidden(!isHidden);
+    const handleInputChange = (event: any) => {
+        setInputValue(event.target.value);
     }
-  }
-  return (
-      <main className="center-content flex flex-col items-center justify-center p-4">
-        <h1 className="text-3xl font-bold">ANSER</h1>
-        // 굳이 버튼이 필요한가?
-        <FormGroup row>
-          <Button variant="contained" onClick={toggleText}>TEXT</Button>
-          <Button variant="contained"
-            onClick={() => (document.getElementById('fileInput') as HTMLInputElement)?.click()}>FILE</Button>
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-          >
-            Upload file
-            <VisuallyHiddenInput type="file"/>
-          </Button>
-        </FormGroup>
 
-        <input type="file" id="fileInput" className={`${isHidden ? 'hidden' : ''} mt-4`} accept=".pdf,image/*"
-          onChange={(e) => console.log(e)}/>
-        {isHidden ? null : (
-            <Box
-                component="form"
-                sx={{
-                  '& > :not(style)': { m: 1, width: '25ch' },
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <TextField
-                  id="outlined-multiline-static"
-                  label="문장 입력 칸"
-                  multiline
-                  rows={4}
-                  value={inputValue}
-                  onChange={ handleInputChange }
-                  //defaultValue="여기에 문장을 입력하세요."
-                />
-            </Box>
-        )}
+    const handleSubmit = async () => {
+        try {
+            const {data, error} = await supabaseFtn.functions.invoke('gpttest', {
+                body: {sentence: inputValue}
+            });
 
-          <div className="flex mt-4">
+            if (error) {
+                console.error('Error invoking Supabase function:', error);
+                return;
+            }
 
-              <FormGroup row>
-                  <FormControlLabel control={<IOSSwitch sx={{ m: 1 }} />} label={"학습모드"} />
-                  <FormControlLabel control={<IOSSwitch sx={{ m: 1 }} />} label={"학습지"} />
-              </FormGroup>
+            console.log('Data received from Supabase:', data);
+            localStorage.setItem('savedText', JSON.stringify(data));
+        } catch (err) {
+            console.error('An error occurred:', err);
+        }
+    }
+    return (
+        <main className="center-content flex flex-col items-center justify-center p-4">
+            <h1 className="text-3xl font-bold">ANSER</h1>
+            <FormGroup row>
+                <Button variant="contained" onClick={toggleText}>TEXT</Button>
+                <Button variant="contained"
+                        onClick={() => (document.getElementById('fileInput') as HTMLInputElement)?.click()}>FILE</Button>
+                <Button
+                    component="label"
+                    role={undefined}
+                    variant="contained"
+                    tabIndex={-1}
+                >
+                    Upload file
+                    <VisuallyHiddenInput type="file"/>
+                </Button>
+            </FormGroup>
 
-          </div>
+            <input type="file" id="fileInput" className={`${isHidden ? 'hidden' : ''} mt-4`} accept=".pdf,image/*"
+                   onChange={(e) => console.log(e)}/>
+            {isHidden ? null : (
+                <Box
+                    component="form"
+                    sx={{
+                        '& > :not(style)': {m: 1, width: '25ch'},
+                    }}
+                    noValidate
+                    autoComplete="off"
+                >
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="문장 입력 칸"
+                        multiline
+                        rows={4}
+                        value={inputValue}
+                        onChange={handleInputChange}
+                    />
+                </Box>
+            )}
 
-          <div className="mt-4">
-            <Button href={"./study-mode"} variant={'contained'} >Submit</Button>
-          </div>
+            <div className="flex mt-4">
 
-      </main>
-  );
+                <FormGroup row>
+                    <FormControlLabel control={<IOSSwitch sx={{m: 1}}/>} label={"학습모드"}/>
+                    <FormControlLabel control={<IOSSwitch sx={{m: 1}}/>} label={"학습지"}/>
+                </FormGroup>
+
+            </div>
+
+            <div className="mt-4">
+                <Button href={"./study-mode"} variant={'contained'}>Submit</Button>
+            </div>
+
+        </main>
+    );
 }
