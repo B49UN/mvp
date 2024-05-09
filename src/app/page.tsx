@@ -8,6 +8,7 @@ import Switch, {SwitchProps} from '@mui/material/Switch';
 import {styled} from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import {createClient} from "@supabase/supabase-js";
+import {saveData, fetchData} from "../../utils/supabase/handledb";
 
 
 const IOSSwitch = styled((props: SwitchProps) => (
@@ -73,7 +74,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 export default function Home() {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(''); 
   const [isHidden, setIsHidden] = useState(true);
   const supabase = createClient("https://ddemkscuymbmverniybk.supabase.co/functions/v1/gpttest", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
   const toggleText = () => setIsHidden(!isHidden);
@@ -81,7 +82,7 @@ export default function Home() {
     setInputValue(event.target.value);
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async () => { // 분석된 data fetch
     try {
       const { data, error } = await supabase.functions.invoke('gpttest', {
         body: { sentence: inputValue }
@@ -92,11 +93,12 @@ export default function Home() {
         return;
       }
 
-      console.log('Data received from Supabase:', data);
-      localStorage.setItem('savedText', JSON.stringify(data));
+      console.log('Data received from Supabase:', data); // 분석된 data fetch
+      localStorage.setItem('savedText', JSON.stringify(data)); // 분석된 data를 local storage가 아닌 supabase에 저장하도록 하기
     } catch (err) {
       console.error('An error occurred:', err);
     }
+
   }
   return (
       <main className="center-content flex flex-col items-center justify-center p-4">
@@ -133,7 +135,7 @@ export default function Home() {
                   label="문장 입력 칸"
                   multiline
                   rows={4}
-                  value={inputValue}
+                  value={inputValue} // 입력한 텍스트 값
                   onChange={ handleInputChange }
                   //defaultValue="여기에 문장을 입력하세요."
                 />
