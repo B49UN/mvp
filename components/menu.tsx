@@ -25,6 +25,7 @@ import Link from "next/link";
 
 
 export function Menu() {
+
     const [open, setOpen] = React.useState(false);
     const items1 = [
         {text: "Log-In", icon: <LoginIcon/>, link: "/login"},
@@ -74,17 +75,22 @@ export function Menu() {
     );
 
     return (
-        <div style={{display: 'flex', justifyContent: 'space-between', backgroundColor: '#1976d2'}}>
-            <Link href={"/"}>
-                <Typography variant="h6" component="div" sx={{flexGrow: 1, mx: 1, color: 'white'}}>
-                    ANSER
-                </Typography>
-            </Link>
-            <Button sx={{color: 'white'}} onClick={toggleDrawer(true)}><MenuIcon/></Button>
-            <Drawer open={open} onClose={toggleDrawer(false)} anchor={'right'}>
-                {DrawerList}
-            </Drawer>
-        </div>
+        <Box sx={{flexGrow: 1}}>
+            <AppBar position={"fixed"} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1}}>
+                <Toolbar>
+                    <Link href={"/"}>
+                        <Typography variant="h6" component="div" sx={{flexGrow: 1, mx: 1, color: 'white'}}>
+                            ANSER
+                        </Typography>
+                    </Link>
+                    <Button sx={{color: 'white'}} onClick={toggleDrawer(true)}><MenuIcon/></Button>
+                    <Drawer open={open} onClose={toggleDrawer(false)} anchor={'right'}>
+                        {DrawerList}
+                    </Drawer>
+                </Toolbar>
+            </AppBar>
+
+        </Box>
     );
 
 }

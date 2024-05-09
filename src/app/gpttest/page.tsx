@@ -1,13 +1,20 @@
-'use client';
+"use client";
+import {useState, useEffect} from "react";
+
+import Button from '@mui/material/Button';
 import {createClient} from "@supabase/supabase-js";
 
 
-function Register() {
+
+
+export default function Gpttest() {
     const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_EDGE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+
+
     const handleSubmit = async () => {
         try {
             const {data: gptData, error: gptError} = await supabase.functions.invoke('gpttest', {
-                body: {sentence: "This is sentence."},
+                body: {sentence: "This is sample sentence."},
             });
 
             if (gptError) {
@@ -20,22 +27,19 @@ function Register() {
             console.error('An error occurred:', err);
         }
     }
-    return(
-        <div>
-            <h4>
-                Register page
-            </h4>
-            <h4>
-                Register page
-            </h4>
-            <h4>
-                Register page
-            </h4>
-            <h1 onClick={handleSubmit}>
-                Click
-            </h1>
-        </div>
-    )
-}
 
-export default Register;
+    return (
+
+
+            <div>
+                <h1>
+                    1
+                </h1>
+                <h1>
+                    1
+                </h1>
+                <Button variant={'contained'} onClick={handleSubmit}>Submit</Button>
+            </div>
+
+    );
+}

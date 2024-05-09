@@ -1,5 +1,7 @@
 import { createClient } from '../../../utils/supabase/server';
 import {type} from "node:os";
+import { saveData, fetchData } from "../../../utils/supabase/handledb";
+
 
 async function Result() {
     const supabase = createClient();

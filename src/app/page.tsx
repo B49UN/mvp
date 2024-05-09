@@ -1,5 +1,5 @@
 "use client";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FormGroup from '@mui/material/FormGroup';
@@ -75,69 +75,93 @@ const VisuallyHiddenInput = styled('input')({
 export default function Home() {
     const [inputValue, setInputValue] = useState('');
     const [isHidden, setIsHidden] = useState(true);
-    const supabaseFtn = createClient("https://ddemkscuymbmverniybk.supabase.co/functions/v1/gpttest", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+    const supabaseFtn = createClient(process.env.NEXT_PUBLIC_SUPABASE_EDGE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
     const toggleText = () => setIsHidden(!isHidden);
     const handleInputChange = (event: any) => {
         setInputValue(event.target.value);
     }
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+
 
     const handleSubmit = async () => {
         try {
-            const {data, error} = await supabaseFtn.functions.invoke('gpttest', {
+            console.log(inputValue);
+            const {data: gptData, error: gptError} = await supabaseFtn.functions.invoke('gpttest', {
                 body: {sentence: inputValue}
             });
 
-            if (error) {
-                console.error('Error invoking Supabase function:', error);
+            if (gptError) {
+                console.error('Error invoking Supabase function:', gptError);
                 return;
             }
 
-            console.log('Data received from Supabase:', data);
-            localStorage.setItem('savedText', JSON.stringify(data));
+            console.log('Data received from Supabase:', gptData)
+
+            let gptOutputJson;
+            if (typeof gptData === 'string') {
+                gptOutputJson = JSON.parse(gptData);
+            } else {
+                gptOutputJson = gptData;
+            }
+
+            const { data: paragraphData, error: paragraphError } = await supabase
+                .from('paragraph')
+                .insert({text: inputValue})
+
+            {/*
+            if (paragraphError || !paragraphData) {
+                console.error('Error: ', paragraphError)
+                return;
+            }
+
+            const paragraph_id = paragraphData[0]["paragraph_id"];
+            */}
+            const { data: analysisData, error: analysisError } = await supabase
+                .from('analysis')
+                .insert([
+                    {first_id: 2, paragraph_id: 1005, sentence_id: 1, analysis: gptOutputJson},
+                ])
+            if (analysisError) {
+                console.error('Error: ', analysisError)
+                return;
+            }
+
         } catch (err) {
             console.error('An error occurred:', err);
         }
     }
+
     return (
-        <main className="center-content flex flex-col items-center justify-center p-4">
+        <main className="center-content flex flex-col items-center justify-center p-4 pt-20">
             <h1 className="text-3xl font-bold">ANSER</h1>
-            <FormGroup row>
-                <Button variant="contained" onClick={toggleText}>TEXT</Button>
-                <Button variant="contained"
-                        onClick={() => (document.getElementById('fileInput') as HTMLInputElement)?.click()}>FILE</Button>
-                <Button
-                    component="label"
-                    role={undefined}
-                    variant="contained"
-                    tabIndex={-1}
-                >
-                    Upload file
-                    <VisuallyHiddenInput type="file"/>
-                </Button>
-            </FormGroup>
 
-            <input type="file" id="fileInput" className={`${isHidden ? 'hidden' : ''} mt-4`} accept=".pdf,image/*"
-                   onChange={(e) => console.log(e)}/>
-            {isHidden ? null : (
-                <Box
-                    component="form"
-                    sx={{
-                        '& > :not(style)': {m: 1, width: '25ch'},
-                    }}
-                    noValidate
-                    autoComplete="off"
-                >
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="문장 입력 칸"
-                        multiline
-                        rows={4}
-                        value={inputValue}
-                        onChange={handleInputChange}
-                    />
-                </Box>
-            )}
-
+            <Box
+                component="form"
+                sx={{
+                    '& > :not(style)': {m: 1, width: '25ch'},
+                }}
+                noValidate
+                autoComplete="off"
+            >
+                <TextField
+                    id="outlined-multiline-static"
+                    label="문장 입력 칸"
+                    multiline
+                    rows={4}
+                    value={inputValue}
+                    onChange={handleInputChange}
+                />
+            </Box>
+            <input type="file" id="fileInput" className='mt-4' accept=".pdf,image/*"/>
+            <Button
+                component="label"
+                role={undefined}
+                variant="contained"
+                tabIndex={-1}
+            >
+                Upload file
+                <VisuallyHiddenInput type="file"/>
+            </Button>
             <div className="flex mt-4">
 
                 <FormGroup row>
@@ -148,7 +172,7 @@ export default function Home() {
             </div>
 
             <div className="mt-4">
-                <Button href={"./study-mode"} variant={'contained'}>Submit</Button>
+                <Button variant={'contained'} onClick={handleSubmit}>Submit</Button>
             </div>
 
         </main>

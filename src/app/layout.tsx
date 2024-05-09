@@ -29,22 +29,19 @@ export default function RootLayout({
 }>) {
     return (
         <html>
-        <head>
-            <title>Title</title>
-            <Script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/all.min.js"
-                    integrity="sha512-u3fPA7V8qQmhBPNT5quvaXVa1mnnLSXUep5PS1qo5NRzHwG19aHmNJnj1Q8hpA/nBWZtZD4r4AX6YOt5ynLN2g=="
-                    crossOrigin="anonymous" referrerPolicy="no-referrer"></Script>
-            <meta name="viewport" content="initial-scale=1, width=device-width"/>
-        </head>
+            <head>
+                <title>Title</title>
+                <meta name="viewport" content="initial-scale=1, width=device-width"/>
+            </head>
 
-        <body className="min-h-screen flex flex-col">
-        <Menu/>
-        <Container fixed>
-            <Box sx={{bgcolor: '#cfe8fc', height: '50vh'}}>
-                {children}
-            </Box>
-        </Container>
-        </body>
+            <body>
+                <Menu/>
+                <Container maxWidth={"sm"}>
+                    <Box sx={{bgcolor: '#cfe8fc', height: '50vh'}}>
+                        {children}
+                    </Box>
+                </Container>
+            </body>
         </html>
     );
 }
