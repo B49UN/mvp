@@ -28,8 +28,8 @@ export function Menu() {
 
     const [open, setOpen] = React.useState(false);
     const items1 = [
-        {text: "Log-In", icon: <LoginIcon/>, link: "/login"},
-        {text: "Sign-In", icon: <InsertEmoticonIcon/>, link: "/register"},
+        {text: "Sign-In", icon: <LoginIcon/>, link: "/login"},
+        {text: "Sign-up", icon: <InsertEmoticonIcon/>, link: "/register"},
     ];
     const items2 = [
         {text: "Subscribe", icon: <AddReactionIcon/>, link: "/"},
