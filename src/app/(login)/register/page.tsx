@@ -1,7 +1,6 @@
 'use client';
 import {createClient} from "@supabase/supabase-js";
 
-
 function Register() {
     const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_EDGE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
     const handleSubmit = async () => {

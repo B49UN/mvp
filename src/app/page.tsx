@@ -75,6 +75,7 @@ const VisuallyHiddenInput = styled('input')({
 export default function Home() {
     const [inputValue, setInputValue] = useState('');
     const [isHidden, setIsHidden] = useState(true);
+    const [sts, setSts] = useState([]);
     const supabaseFtn = createClient(process.env.NEXT_PUBLIC_SUPABASE_EDGE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
     const toggleText = () => setIsHidden(!isHidden);
     const handleInputChange = (event: any) => {
@@ -86,6 +87,10 @@ export default function Home() {
     const handleSubmit = async () => {
         try {
             console.log(inputValue);
+            {/*
+            const sentenceArray = inputValue.split(/(?<=[.!?])\s+(?=\p{Lu})/u).filter(Boolean);
+            setSts(sentenceArray);*/}
+
             const {data: gptData, error: gptError} = await supabaseFtn.functions.invoke('gpttest', {
                 body: {sentence: inputValue}
             });
@@ -108,14 +113,9 @@ export default function Home() {
                 .from('paragraph')
                 .insert({text: inputValue})
 
-            {/*
-            if (paragraphError || !paragraphData) {
-                console.error('Error: ', paragraphError)
-                return;
-            }
+            //const paragraph_id = paragraphData;
+            console.log('p_id', paragraphData);
 
-            const paragraph_id = paragraphData[0]["paragraph_id"];
-            */}
             const { data: analysisData, error: analysisError } = await supabase
                 .from('analysis')
                 .insert([
