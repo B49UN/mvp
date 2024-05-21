@@ -39,9 +39,9 @@ export default async function SignUp() {
     const uemail = data.get('email') as string;
     const upass = data.get('password')as string;
     const { data: useremail, error: usererror } = await supabase.auth.signUp({
-        email: uemail,
-        password: upass
-        })
+      email: uemail,
+      password: upass,
+      });
     console.log({
       email: data.get('email'),
       password: data.get('password'),
@@ -138,21 +138,4 @@ export default async function SignUp() {
       </Container>
     </ThemeProvider>
   );
-}
-
-
-async function Register(email: string, password: string) {
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
-    const { data, error } = await supabase.auth.signUp({
-    email,
-    password
-  })
-
-    return(
-        <div>
-            <h4>
-                Register page
-            </h4>
-        </div>
-    )
 }
