@@ -1,5 +1,5 @@
 "use client";
-import { createClient } from '../../../../utils/supabase/server';
+import { createClient } from '@supabase/supabase-js';
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -31,10 +31,24 @@ function Copyright(props: any) {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+export default async function SignIn() {
+  const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    console.log(1);
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const uemail = data.get('email') as string;
+    const upass = data.get('password')as string;
+    const { data: useremail, error: usererror } = await supabase.auth.signInWithPassword({
+  email: uemail,
+  password: upass,
+  });
+  if (usererror) {
+    console.log(usererror)
+  };
+  if (useremail) {
+    console.log(useremail)
+  };
     console.log({
       email: data.get('email'),
       password: data.get('password'),
@@ -89,7 +103,6 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              href="/"
             >
               Sign In
             </Button>
