@@ -36,8 +36,8 @@ export default function RootLayout({
 
             <body>
                 <Menu/>
-                <Container maxWidth={"sm"}>
-                    <Box sx={{bgcolor: '#cfe8fc', height: '50vh'}}>
+                <Container>
+                    <Box sx={{height: '50vh'}}>
                         {children}
                     </Box>
                 </Container>

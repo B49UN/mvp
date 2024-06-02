@@ -14,24 +14,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { useRouter } from 'next/navigation';
+import Stack from '@mui/material/Stack';
 
 // TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
+const defaultTheme = createTheme();     
 
 export default async function SignIn() {
+  const router = useRouter()
   const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     console.log(1);
@@ -39,15 +29,18 @@ export default async function SignIn() {
     const data = new FormData(event.currentTarget);
     const uemail = data.get('email') as string;
     const upass = data.get('password')as string;
-    const { data: useremail, error: usererror } = await supabase.auth.signInWithPassword({
+    const { data: res, error: usererror } = await supabase.auth.signInWithPassword({
   email: uemail,
   password: upass,
   });
   if (usererror) {
     console.log(usererror)
   };
-  if (useremail) {
-    console.log(useremail)
+  if (res) {
+    console.log(res)
+    if(res.user){
+      router.push('/');
+    }
   };
     console.log({
       email: data.get('email'),
@@ -61,7 +54,7 @@ export default async function SignIn() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 15,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -70,8 +63,8 @@ export default async function SignIn() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
+          <Typography component="h1" variant="h5" sx={{fontFamily: 'Nanum Gothic, sans-serif', fontWeight: 'bold'}}><div className="text-blue-500">
+            Sign in</div>
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -95,8 +88,8 @@ export default async function SignIn() {
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              control={<div className="flex flex-row justify-center items-center"><Checkbox value="remember" color="primary"/><div className="text-blue-500">Remember me(아직)</div></div>}
+              label=""
             />
             <Button
               type="submit"
@@ -109,18 +102,17 @@ export default async function SignIn() {
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
+                  Forgot password?(아직)
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );

@@ -8,6 +8,8 @@ import Switch, {SwitchProps} from '@mui/material/Switch';
 import {styled} from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import {createClient} from "@supabase/supabase-js";
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 
 const IOSSwitch = styled((props: SwitchProps) => (
@@ -133,45 +135,50 @@ export default function Home() {
 
     return (
         <main className="center-content flex flex-col items-center justify-center p-4 pt-20">
-            <h1 className="text-3xl font-bold">ANSER</h1>
+            <h1 className="text-3xl font-bold text-blue-500" style={{marginTop: '24px'}}>ANSER</h1>
 
             <Box
                 component="form"
                 sx={{
-                    '& > :not(style)': {m: 1, width: '25ch'},
+                    '& > :not(style)': {m: 1, width: '50ch'},
+                    marginBottom: 5,  marginTop: 5
                 }}
                 noValidate
                 autoComplete="off"
             >
                 <TextField
                     id="outlined-multiline-static"
-                    label="문장 입력 칸"
+                    label="Type your sentences"
                     multiline
                     rows={4}
                     value={inputValue}
                     onChange={handleInputChange}
                 />
             </Box>
-            <input type="file" id="fileInput" className='mt-4' accept=".pdf,image/*"/>
+            <input type="file" id="fileInput" className='mt-4' accept=".pdf,image/*" style={{display:"none"}}/>
             <Button
                 component="label"
                 role={undefined}
                 variant="contained"
                 tabIndex={-1}
+                sx={{ marginBottom: 5 }}
             >
                 Upload file
                 <VisuallyHiddenInput type="file"/>
             </Button>
-            <div className="flex mt-4">
+            <div className="flex mt-4" style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
 
                 <FormGroup row>
-                    <FormControlLabel control={<IOSSwitch sx={{m: 1}}/>} label={"학습모드"}/>
-                    <FormControlLabel control={<IOSSwitch sx={{m: 1}}/>} label={"학습지"}/>
+                    <FormControlLabel control={<Stack direction="row" spacing={1}><IOSSwitch sx={{m: 1}}/></Stack>} 
+                    label={<div className="text-blue-500"><Typography variant="body1" sx={{fontFamily: 'Nanum Gothic, sans-serif', fontWeight: 'bold', fontSize: '18px', marginLeft: '10px'}}>학습 모드</Typography></div>}/>
+                    <div className="m-3"/>
+                    <FormControlLabel control={<Stack direction="row" spacing={1}><IOSSwitch sx={{m: 1}}/></Stack>}
+                    label={<div className="text-blue-500"><Typography variant="body1" sx={{fontFamily: 'Nanum Gothic, sans-serif', fontWeight: 'bold', fontSize: '18px', marginLeft: '10px'}}>학습지</Typography></div>}/>
                 </FormGroup>
 
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4" style={{ marginTop: '50px' }}>
                 <Button variant={'contained'} onClick={handleSubmit}>Submit</Button>
             </div>
 
