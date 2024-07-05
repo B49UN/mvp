@@ -8,6 +8,7 @@ import Switch, {SwitchProps} from '@mui/material/Switch';
 import {styled} from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import {createClient} from "@supabase/supabase-js";
+import SubmitButton from "../../components/submitButton";
 
 
 const IOSSwitch = styled((props: SwitchProps) => (
@@ -75,21 +76,23 @@ const VisuallyHiddenInput = styled('input')({
 export default function Home() {
     const [inputValue, setInputValue] = useState('');
     const [isHidden, setIsHidden] = useState(true);
-    const [sts, setSts] = useState([]);
-    const supabaseFtn = createClient(process.env.NEXT_PUBLIC_SUPABASE_EDGE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+    // const [sts, setSts] = useState<string[]>([]);
+    // const supabaseFtn = createClient(process.env.NEXT_PUBLIC_SUPABASE_EDGE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
     const toggleText = () => setIsHidden(!isHidden);
     const handleInputChange = (event: any) => {
         setInputValue(event.target.value);
     }
     const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
-
-
+    {/*
     const handleSubmit = async () => {
         try {
             console.log(inputValue);
-            {/*
-            const sentenceArray = inputValue.split(/(?<=[.!?])\s+(?=\p{Lu})/u).filter(Boolean);
-            setSts(sentenceArray);*/}
+
+            const sentenceArray: string[] = inputValue
+                .split(/(?<!\b\p{L}{1,3})([.!?])(?=\s+\p{Lu})/u)
+                .map(sentence => sentence.trim())
+                .filter(Boolean);
+            // setSts(sentenceArray);
 
             const {data: gptData, error: gptError} = await supabaseFtn.functions.invoke('gpttest', {
                 body: {sentence: inputValue}
@@ -129,7 +132,7 @@ export default function Home() {
         } catch (err) {
             console.error('An error occurred:', err);
         }
-    }
+    } */}
 
     return (
         <main className="center-content flex flex-col items-center justify-center p-4 pt-20">
@@ -171,9 +174,8 @@ export default function Home() {
 
             </div>
 
-            <div className="mt-4">
-                <Button variant={'contained'} onClick={handleSubmit}>Submit</Button>
-            </div>
+            <SubmitButton inputValue={inputValue} />
+
 
         </main>
     );
