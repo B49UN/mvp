@@ -88,7 +88,7 @@ export default async function SignIn() {
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<div className="flex flex-row justify-center items-center"><Checkbox value="remember" color="primary"/><div className="text-blue-500">Remember me(아직)</div></div>}
+              control={<div className="flex flex-row justify-center items-center"><Checkbox value="remember" color="primary"/><div className="text-blue-500">Remember account (아직)</div></div>}
               label=""
             />
             <Button
@@ -102,7 +102,7 @@ export default async function SignIn() {
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?(아직)
+                  Forgot password? (아직)
                 </Link>
               </Grid>
               <Grid item>

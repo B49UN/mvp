@@ -69,11 +69,11 @@ export default async function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="Name"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="Name"
+                  label="Name"
                   autoFocus
                 />
               </Grid>
@@ -81,9 +81,9 @@ export default async function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
+                  id="NickName"
+                  label="Nickname"
+                  name="NickName"
                   autoComplete="family-name"
                 />
               </Grid>

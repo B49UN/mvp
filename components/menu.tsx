@@ -77,19 +77,18 @@ export function Menu() {
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar position={"fixed"} sx={{ zIndex: (theme) => theme.zIndex.drawer - 1}}>
-                <Toolbar sx={{display: "flex", justifyContent:"space-between"}}>
+                <Toolbar sx={{display: "flex", justifyContent:"flex-start", padding: 0}}>
+                    <Button sx={{color: 'white', minWidth: 0, padding: 0}} onClick={open == true ? toggleDrawer(false) : toggleDrawer(true)}><MenuIcon/></Button>
+                    <Drawer open={open} onClose={toggleDrawer(false)} anchor={'left'}>
+                        {DrawerList}
+                    </Drawer>
                     <Link href={"/"}>
-                        <Typography variant="h6" component="div" sx={{flexGrow: 1, mx: 1, color: 'white'}}>
+                        <Typography variant="h6" component="div" sx={{flexGrow: 1, mx: 3, color: 'white'}}>
                             ANSER
                         </Typography>
                     </Link>
-                    <Button sx={{color: 'white'}} onClick={open == true ? toggleDrawer(false) : toggleDrawer(true)}><MenuIcon/></Button>
-                    <Drawer open={open} onClose={toggleDrawer(false)} anchor={'right'}>
-                        {DrawerList}
-                    </Drawer>
                 </Toolbar>
             </AppBar>
-
         </Box>
     );
 

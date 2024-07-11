@@ -1,5 +1,6 @@
 "use client";
 import {useState, useEffect} from "react";
+import {useRouter} from 'next/navigation';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FormGroup from '@mui/material/FormGroup';
@@ -7,10 +8,20 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch, {SwitchProps} from '@mui/material/Switch';
 import {styled} from '@mui/material/styles';
 import Button from '@mui/material/Button';
-import {createClient} from "@supabase/supabase-js";
+import {createClient, PostgrestSingleResponse} from "@supabase/supabase-js";
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
+interface Paragraph {
+    paragraph_id: number;
+    text: string;
+}
+
+interface Sentence {
+    sentence_id: number;
+    paragraph_id: number;
+    text: string;
+}
 
 const IOSSwitch = styled((props: SwitchProps) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -74,15 +85,19 @@ const VisuallyHiddenInput = styled('input')({
     whiteSpace: 'nowrap',
     width: 1,
 });
+
 export default function Home() {
     const [inputValue, setInputValue] = useState('');
     const [isHidden, setIsHidden] = useState(true);
+    const [paragraphId, setParagraphId] = useState<number | null>(null);
+    const [shouldRedirect, setShouldRedirect] = useState(false);
     const supabaseFtn = createClient(process.env.NEXT_PUBLIC_SUPABASE_EDGE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+    const router = useRouter();
     const toggleText = () => setIsHidden(!isHidden);
     const handleInputChange = (event: any) => {
         setInputValue(event.target.value);
     }
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 
 
     const handleSubmit = async () => {
@@ -106,33 +121,59 @@ export default function Home() {
                 gptOutputJson = gptData;
             }
 
-            const { data: paragraphData, error: paragraphError } = await supabase
+            const { data: paragraphData, error: paragraphError }: PostgrestSingleResponse<Paragraph> = await supabase
                 .from('paragraph')
                 .insert({text: inputValue})
-
-            {/*
+                .select()
+                .single();
+        
+            {
             if (paragraphError || !paragraphData) {
                 console.error('Error: ', paragraphError)
                 return;
             }
+        }
+            console.log(paragraphData);
+            const { paragraph_id } = paragraphData;
+            console.log(paragraph_id);
+            
+            const sentences = inputValue.split('.').map(sentence => sentence.trim()).filter(sentence => sentence.length > 0);
 
-            const paragraph_id = paragraphData[0]["paragraph_id"];
-            */}
-            const { data: analysisData, error: analysisError } = await supabase
-                .from('analysis')
-                .insert([
-                    {first_id: 2, paragraph_id: 1005, sentence_id: 1, analysis: gptOutputJson},
-                ])
-            if (analysisError) {
-                console.error('Error: ', analysisError)
-                return;
-            }
+            const sentenceInsertPromises = sentences.map((sentence) =>
+                supabase
+                    .from('sentence')
+                    .insert({ paragraph_id: paragraph_id, text: sentence })
+                    .select()
+            );
+            const sentenceDataArray: PostgrestSingleResponse<Sentence[]>[] = await Promise.all(sentenceInsertPromises);
 
-        } catch (err) {
+            const analysisInsertPromises = sentenceDataArray.map((response, index) => {
+                if (!response.data || response.data.length === 0) {
+                    throw new Error('Sentence insertion failed');
+                }
+                const sentence_id = response.data![0].sentence_id; // sentence_id 가져오기
+                const analysis = gptOutputJson[index]; // 각 문장에 대한 분석 결과
+                return supabase
+                    .from('analysis')
+                    .insert({ paragraph_id, sentence_id, analysis })
+                    .select();
+            });
+            await Promise.all(analysisInsertPromises);
+
+            setShouldRedirect(true);
+            router.push(`/study-mode?paragraph_id=${paragraph_id}`); 
+        } 
+        catch (err) {
             console.error('An error occurred:', err);
         }
-    }
+    };
 
+    useEffect(() => {
+        if (shouldRedirect) {
+            router.push('/study-mode');
+        }
+    }, [shouldRedirect, router]);
+    
     return (
         <main className="center-content flex flex-col items-center justify-center p-4 pt-20">
             <h1 className="text-3xl font-bold text-blue-500" style={{marginTop: '24px'}}>ANSER</h1>
@@ -170,10 +211,10 @@ export default function Home() {
 
                 <FormGroup row>
                     <FormControlLabel control={<Stack direction="row" spacing={1}><IOSSwitch sx={{m: 1}}/></Stack>} 
-                    label={<div className="text-blue-500"><Typography variant="body1" sx={{fontFamily: 'Nanum Gothic, sans-serif', fontWeight: 'bold', fontSize: '18px', marginLeft: '10px'}}>학습 모드</Typography></div>}/>
+                    label={<div className="text-blue-500"><Typography variant="body1" sx={{fontFamily: 'Nanum Gothic, sans-serif', fontWeight: 'bold', fontSize: '18px', marginLeft: '10px'}}>쉬운 어휘 모드</Typography></div>}/>
                     <div className="m-3"/>
                     <FormControlLabel control={<Stack direction="row" spacing={1}><IOSSwitch sx={{m: 1}}/></Stack>}
-                    label={<div className="text-blue-500"><Typography variant="body1" sx={{fontFamily: 'Nanum Gothic, sans-serif', fontWeight: 'bold', fontSize: '18px', marginLeft: '10px'}}>학습지</Typography></div>}/>
+                    label={<div className="text-blue-500"><Typography variant="body1" sx={{fontFamily: 'Nanum Gothic, sans-serif', fontWeight: 'bold', fontSize: '18px', marginLeft: '10px'}}>학습 모드</Typography></div>}/>
                 </FormGroup>
 
             </div>

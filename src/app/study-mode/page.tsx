@@ -5,43 +5,92 @@ import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import AppBar from '@mui/material/AppBar';
-import { createClient } from '@supabase/supabase-js'
-import {useEffect, useState} from "react";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Typography from "@mui/material/Typography";
-
+import Typography from '@mui/material/Typography';
+import { createClient } from '@supabase/supabase-js';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useFetchAnalysisData } from `./fetchanalysis`
+//import { Suspense } from 'react';
 
 const drawerWidth = 240;
-// const supabase = createClient();
 
-function Study() {
-    const [data, setData] = useState([]);
-    const [drawerItems, setDrawerItems] = useState([]);
-    {/*
-    }ffect(() => {
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
+
+interface AnalysisData {
+    paragraph_id: number;
+    sentence_id: number;
+    sentence: string;
+    analysis: any;
+}
+
+// const fetchAnalysisData = async (paragraph_id: number): Promise<AnalysisData[]> => {
+//     const { data, error } = await supabase
+//         .from('analysis')
+//         .select('*')
+//         .eq('paragraph_id',paragraph_id);
+
+//     if (error) {
+//         console.error("Error: ", error);
+//         return [];
+//     }
+
+//     return data;
+// };
+
+const AnalysisList = ({ paragraph_id }: { paragraph_id: number }) => {
+    const { data, loading } = useFetchAnalysisData(paragraph_id);
+  
+    if (loading) {
+      return <Typography>Loading...</Typography>;
+    }
+  
+    return (
+      <List>
+        {data.map((item : any, index : number) => (
+          <ListItem key={index} disablePadding>
+            <ListItemButton>
+              <ListItemText primary={item.sentence.split(' ').slice(0, 3).join(' ')} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    );
+  };
+
+const Study = async () => {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const paragraph_id = searchParams.get('paragraph_id');
+    const [data, setData] = React.useState<AnalysisData[]>([]);
+    const [selectedAnalysis, setSelectedAnalysis] = React.useState<any>(null);
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            if (paragraph_id) {
+                const { data, error } = await supabase
+                    .from('analysis')
+                    .select('*')
+                    .eq('paragraph_id', Number(paragraph_id));
+
+                if (error) {
+                    console.error("Error: ", error);
+                } else {
+                    setData(data);
+                }
+            }
+        };
+
         fetchData();
-    }, []);
+    }, [paragraph_id]);
 
-    async function fetchData() {
-        let {data, error} = await supabase
-            .from('analysis')
-            .select('*')
-            .eq('paragraph_id', 3)
-        if (error) console.log("Error: ", error)
-        else {
-            setData(data);
-            const items = data.map(item => item.sentence.split(' ').slice(0, 3).join(' '))
-            setDrawerItems(items);
-        }
-    }*/}
+    const handleSentenceClick = (index: number) => {
+        setSelectedAnalysis(data[index].analysis);
+    };
 
     return (
-        <Box sx={{ display: 'flex' }}>{/*
+        <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <Drawer
                 variant="permanent"
@@ -54,36 +103,30 @@ function Study() {
                 <Toolbar />
                 <Box sx={{ overflow: 'auto' }}>
                     <List>
-                        {drawerItems.map((text, idnex) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton onClick={() =>
-                                    document.getElementById(`box-${index}`).scrollIntoView()}>
-                                    <ListItemText primary={text} />
+                        {data.map((item, index) => (
+                            <ListItem key={index} disablePadding>
+                                <ListItemButton onClick={() => handleSentenceClick(index)}>
+                                    <ListItemText primary={item.sentence.split(' ').slice(0, 3).join(' ')} />
                                 </ListItemButton>
                             </ListItem>
                         ))}
-                        {/*
-                        {['Sentence 1', 'Sentence 2', 'Sentence 3', 'Sentence 4'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-
                     </List>
                 </Box>
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <Toolbar />
-                {data.map((item, index) => (
-                    <Box key={index} id={`box-${index}`}>
-                        <Typography variant={"body1"}>{item.sentence}</Typography>
+                {selectedAnalysis ? (
+                    <Box>
+                        <Typography variant="body1">
+                            {JSON.stringify(selectedAnalysis, null, 2)}
+                        </Typography>
                     </Box>
-                ))}
-            </Box>*/}
+                ) : (
+                    <Typography variant="body1">Select a sentence to view its analysis</Typography>
+                )}
+            </Box>
         </Box>
     );
-}
+};
 
 export default Study;
