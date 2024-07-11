@@ -41,6 +41,8 @@ interface AnalysisData {
 
 const AnalysisList = ({ paragraph_id }: { paragraph_id: number }) => {
     const { data, loading } = useFetchAnalysisData(paragraph_id);
+    console.log('analysis DAta')
+    console.log(data)
 
     if (loading) {
       return <Typography>Loading...</Typography>;
@@ -51,7 +53,7 @@ const AnalysisList = ({ paragraph_id }: { paragraph_id: number }) => {
         {data.map((item : any, index : number) => (
           <ListItem key={index} disablePadding>
             <ListItemButton>
-              <ListItemText primary={item.sentence.split(' ').slice(0, 3).join(' ')} />
+              <ListItemText primary={item.sentence_id} />
             </ListItemButton>
           </ListItem>
         ))}

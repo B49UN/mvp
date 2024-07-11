@@ -9,7 +9,6 @@ const supabase = createClient(
 interface AnalysisData {
   paragraph_id: number;
   sentence_id: number;
-  sentence: string;
   analysis: any;
 }
 
@@ -36,8 +35,8 @@ export const useFetchAnalysisData = (paragraph_id: number) => {
       const result = await fetchAnalysisData(paragraph_id);
       setData(result);
       setLoading(false);
+      console.log(result);
     };
-
     fetchData();
   }, [paragraph_id]);
 

@@ -187,11 +187,14 @@ export default function Home() {
                 console.error('Error: ', analysisError)
                 return;
             }
+            if (analysisData) {
+                router.push(`/study-mode?paragraph_id=${paragraph_id}`);
+            }
 
             //await Promise.all(analysisInsertPromises);
 
-            setShouldRedirect(true);
-            router.push(`/study-mode?paragraph_id=${paragraph_id}`);
+
+
         }
         catch (err) {
             console.error('An error occurred:', err);
