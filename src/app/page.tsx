@@ -23,6 +23,14 @@ interface Sentence {
     text: string;
 }
 
+interface Analysis {
+    paragraph_id: number;
+    sentence_id: string;
+    analysis: string;
+}
+
+
+
 const IOSSwitch = styled((props: SwitchProps) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({theme}) => ({
@@ -101,6 +109,7 @@ export default function Home() {
 
 
     const handleSubmit = async () => {
+        console.log(inputValue);
         try {
             console.log(inputValue);
             const {data: gptData, error: gptError} = await supabaseFtn.functions.invoke('gpttest', {
@@ -126,7 +135,7 @@ export default function Home() {
                 .insert({text: inputValue})
                 .select()
                 .single();
-        
+
             {
             if (paragraphError || !paragraphData) {
                 console.error('Error: ', paragraphError)
@@ -136,7 +145,7 @@ export default function Home() {
             console.log(paragraphData);
             const { paragraph_id } = paragraphData;
             console.log(paragraph_id);
-            
+
             const sentences = inputValue.split('.').map(sentence => sentence.trim()).filter(sentence => sentence.length > 0);
 
             const sentenceInsertPromises = sentences.map((sentence) =>
@@ -147,22 +156,42 @@ export default function Home() {
             );
             const sentenceDataArray: PostgrestSingleResponse<Sentence[]>[] = await Promise.all(sentenceInsertPromises);
 
-            const analysisInsertPromises = sentenceDataArray.map((response, index) => {
-                if (!response.data || response.data.length === 0) {
-                    throw new Error('Sentence insertion failed');
-                }
+            // const analysisInsertPromises = sentenceDataArray.map((response, index) => {
+            //     if (!response.data || response.data.length === 0) {
+            //         throw new Error('Sentence insertion failed');
+            //     }
+
+
+                // const { data : analysisData , error : analysisError }: PostgrestSingleResponse<Analysis> = supabase
+                //     .from('analysis')
+                //     .insert({ paragraph_id, sentence_id, analysis })
+                //     .select();
+
+
+            // });
+            const insertData: any[] = []
+            sentenceDataArray.map((response, index) => {
                 const sentence_id = response.data![0].sentence_id; // sentence_id 가져오기
                 const analysis = gptOutputJson[index]; // 각 문장에 대한 분석 결과
-                return supabase
-                    .from('analysis')
-                    .insert({ paragraph_id, sentence_id, analysis })
-                    .select();
+                insertData.push({paragraph_id, sentence_id, analysis})
             });
-            await Promise.all(analysisInsertPromises);
+
+            console.log(insertData)
+
+            const { data: analysisData, error: analysisError }: PostgrestSingleResponse<Analysis[]> = await supabase
+                .from('analysis')
+                .insert(insertData)
+                .select();
+            if (analysisError || !analysisData) {
+                console.error('Error: ', analysisError)
+                return;
+            }
+
+            //await Promise.all(analysisInsertPromises);
 
             setShouldRedirect(true);
-            router.push(`/study-mode?paragraph_id=${paragraph_id}`); 
-        } 
+            router.push(`/study-mode?paragraph_id=${paragraph_id}`);
+        }
         catch (err) {
             console.error('An error occurred:', err);
         }
@@ -173,7 +202,7 @@ export default function Home() {
             router.push('/study-mode');
         }
     }, [shouldRedirect, router]);
-    
+
     return (
         <main className="center-content flex flex-col items-center justify-center p-4 pt-20">
             <h1 className="text-3xl font-bold text-blue-500" style={{marginTop: '24px'}}>ANSER</h1>
@@ -210,7 +239,7 @@ export default function Home() {
             <div className="flex mt-4" style={{display: 'flex', justifyContent: 'center', width: '100%'}}>
 
                 <FormGroup row>
-                    <FormControlLabel control={<Stack direction="row" spacing={1}><IOSSwitch sx={{m: 1}}/></Stack>} 
+                    <FormControlLabel control={<Stack direction="row" spacing={1}><IOSSwitch sx={{m: 1}}/></Stack>}
                     label={<div className="text-blue-500"><Typography variant="body1" sx={{fontFamily: 'Nanum Gothic, sans-serif', fontWeight: 'bold', fontSize: '18px', marginLeft: '10px'}}>쉬운 어휘 모드</Typography></div>}/>
                     <div className="m-3"/>
                     <FormControlLabel control={<Stack direction="row" spacing={1}><IOSSwitch sx={{m: 1}}/></Stack>}

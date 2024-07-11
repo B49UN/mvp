@@ -11,7 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { createClient } from '@supabase/supabase-js';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useFetchAnalysisData } from `./fetchanalysis`
+import { useFetchAnalysisData } from './DataFetchingComponent'
 //import { Suspense } from 'react';
 
 const drawerWidth = 240;
@@ -41,11 +41,11 @@ interface AnalysisData {
 
 const AnalysisList = ({ paragraph_id }: { paragraph_id: number }) => {
     const { data, loading } = useFetchAnalysisData(paragraph_id);
-  
+
     if (loading) {
       return <Typography>Loading...</Typography>;
     }
-  
+
     return (
       <List>
         {data.map((item : any, index : number) => (
@@ -59,7 +59,7 @@ const AnalysisList = ({ paragraph_id }: { paragraph_id: number }) => {
     );
   };
 
-const Study = async () => {
+const Study =  () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const paragraph_id = searchParams.get('paragraph_id');
@@ -67,18 +67,18 @@ const Study = async () => {
     const [selectedAnalysis, setSelectedAnalysis] = React.useState<any>(null);
 
     React.useEffect(() => {
-        const fetchData = async () => {
+        const fetchData =  () => {
             if (paragraph_id) {
-                const { data, error } = await supabase
-                    .from('analysis')
-                    .select('*')
-                    .eq('paragraph_id', Number(paragraph_id));
+                // const { data, error } = await supabase
+                //     .from('analysis')
+                //     .select('*')
+                //     .eq('paragraph_id', Number(paragraph_id));
 
-                if (error) {
-                    console.error("Error: ", error);
-                } else {
-                    setData(data);
-                }
+                // if (error) {
+                //     console.error("Error: ", error);
+                // } else {
+                //     setData(data);
+                // }
             }
         };
 
@@ -102,15 +102,7 @@ const Study = async () => {
             >
                 <Toolbar />
                 <Box sx={{ overflow: 'auto' }}>
-                    <List>
-                        {data.map((item, index) => (
-                            <ListItem key={index} disablePadding>
-                                <ListItemButton onClick={() => handleSentenceClick(index)}>
-                                    <ListItemText primary={item.sentence.split(' ').slice(0, 3).join(' ')} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
+                    <AnalysisList paragraph_id={Number(paragraph_id)}/>
                 </Box>
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
