@@ -172,7 +172,8 @@ export default function Home() {
             const insertData: any[] = []
             sentenceDataArray.map((response, index) => {
                 const sentence_id = response.data![0].sentence_id; // sentence_id 가져오기
-                const analysis = gptOutputJson[index]; // 각 문장에 대한 분석 결과
+                const analysis = gptOutputJson['analysis']; // 각 문장에 대한 분석 결과
+                console.log(analysis)
                 insertData.push({paragraph_id, sentence_id, analysis})
             });
 
