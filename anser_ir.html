@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANSER: AI 영어 학습 시장 동향 인포그래픽</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f0f9ff; /* Light blue background from Brilliant Blues palette */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .stat-card {
+            background-color: #CAF0F8; /* Lighter blue from palette */
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .section-title {
+            color: #0077B6; /* Dark blue from palette */
+        }
+        .accent-bg {
+            background-color: #00B4D8; /* Medium blue from palette */
+        }
+        .accent-text {
+            color: #00B4D8;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 1.5rem; /* mb-6 */
+        }
+        /* Chosen Palette: Brilliant Blues (#0077B6, #00B4D8, #ADE8F4, #CAF0F8, #90E0EF) */
+        /* NEITHER Mermaid JS NOR SVG were used anywhere in this output. All diagrams/icons are HTML/CSS or Unicode. */
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="accent-bg text-white py-8 text-center">
+        <h1 class="text-4xl font-bold">ANSER: AI가 이끄는 영어 학습의 새로운 물결</h1>
+        <p class="mt-2 text-lg">영어 구문 독해, 이제 AI와 함께 정복하세요!</p>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+
+        <section id="intro" class="mb-12">
+            <div class="card">
+                <h2 class="text-3xl font-bold section-title mb-6 text-center">왜 아직도 영어가 어려울까요?</h2>
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <div>
+                        <p class="text-lg mb-4">많은 학생들이 시간과 노력을 투자함에도 불구하고 영어, 특히 <strong class="accent-text">구문 독해</strong>에서 큰 어려움을 겪고 있습니다. 기존의 학습 방식은 높은 비용 부담과 함께 즉각적인 피드백 부재라는 한계를 가지고 있습니다.</p>
+                        <p class="text-lg">대표자(8년차 영어 강사)의 경험에 따르면, 학생들의 <strong class="accent-text">90% 이상</strong>이 구문 독해를 어려워하며, 이는 영어 학습의 큰 장벽으로 작용합니다.</p>
+                    </div>
+                    <div class="text-center">
+                         <span class="text-6xl">🤔</span>
+                         <p class="mt-2 text-xl font-semibold">"영어 문장 구조, 너무 복잡해요!"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="market" class="mb-12">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">멈추지 않는 성장: 영어 교육 시장의 기회</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="stat-card">
+                    <h3 class="text-2xl font-bold text-[#0077B6] mb-2">글로벌 영어 학습 시장</h3>
+                    <p class="text-4xl font-bold accent-text">790억<span class="text-2xl">USD</span></p>
+                    <p class="text-sm mt-1">(2033년 예상, 출처: businessresearchinsights.com)</p>
+                    <p class="text-sm mt-1">연평균 <strong class="text-[#0077B6]">22%</strong> 성장</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="text-2xl font-bold text-[#0077B6] mb-2">국내 사교육 시장</h3>
+                    <p class="text-4xl font-bold accent-text">29.2조<span class="text-2xl">원</span></p>
+                    <p class="text-sm mt-1">(2024년, 출처: 통계청)</p>
+                    <p class="text-sm mt-1">영어 과목 비중 <strong class="text-[#0077B6]">#1</strong></p>
+                </div>
+                <div class="stat-card md:col-span-2 lg:col-span-1">
+                    <h3 class="text-2xl font-bold text-[#0077B6] mb-2">국내 타겟 학생 수</h3>
+                    <p class="text-4xl font-bold accent-text">263만<span class="text-2xl">명</span></p>
+                    <p class="text-sm mt-1">(중/고등학생, 출처: 통계청)</p>
+                </div>
+            </div>
+            <div class="card">
+                 <h3 class="text-2xl font-bold section-title mb-4 text-center">글로벌 영어 학습 시장 성장 전망 (USD Billion)</h3>
+                <div class="chart-container">
+                    <canvas id="globalMarketChart"></canvas>
+                </div>
+                <p class="text-sm text-center mt-2">출처: businessresearchinsights.com (문서 5페이지 그래프 기반)</p>
+            </div>
+        </section>
+
+        <section id="solution" class="mb-12">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">AI 튜터 "ANSER": 스마트한 영어 학습의 시작</h2>
+            <div class="card">
+                <div class="text-center mb-6">
+                    <img src="https://placehold.co/150x150/00B4D8/FFFFFF?text=ANSER" alt="ANSER App Logo" class="mx-auto mb-4 rounded-full">
+                    <p class="text-xl">ANSER는 고액 과외를 통해서만 가능했던 구문 분석 및 직독직해 학습을 AI 튜터의 개인별 맞춤 지도로 제공하는 혁신적인 애플리케이션입니다.</p>
+                </div>
+                <h3 class="text-2xl font-semibold accent-text mb-4">ANSER 핵심 기능</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-4 bg-slate-50 rounded-lg">
+                        <h4 class="text-xl font-bold text-[#0077B6] mb-2">📚 OCR 기술 활용</h4>
+                        <p>PDF, 시험지 사진 촬영 한 번으로 학습 자료를 손쉽게 텍스트로 변환하여 바로 학습 시작!</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg">
+                        <h4 class="text-xl font-bold text-[#0077B6] mb-2">🎯 사용자 직접 학습</h4>
+                        <p>AI가 분석한 문장 구조를 보며 스스로 학습하고, 어떤 시험에도 적용 가능한 독해 능력 향상.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg">
+                        <h4 class="text-xl font-bold text-[#0077B6] mb-2">💬 실시간 맞춤 피드백</h4>
+                        <p>문장 단위 사용자 맞춤형 구문 독해 정확도 분석 및 AI 튜터의 즉각적인 피드백 제공.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-lg">
+                        <h4 class="text-xl font-bold text-[#0077B6] mb-2">📊 학습 성취도 대시보드</h4>
+                        <p>개인별 학습 진척도와 성취도를 시각화하여 체계적인 학습 관리 가능.</p>
+                    </div>
+                </div>
+                <div class="mt-8 text-center stat-card bg-[#ADE8F4]">
+                    <h4 class="text-xl font-bold text-[#0077B6] mb-2">ANSER 기대 효과</h4>
+                    <p class="text-2xl">베타 서비스 사용자 <strong class="accent-text">내신 시험 지문 구문 독해 능력 85% 이상 향상!</strong></p>
+                    <p class="text-xl mt-2">개인 과외 대비 <strong class="accent-text">1/30 수준의 비용</strong>으로 높은 학습 효과!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="competition" class="mb-12">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">ANSER만의 경쟁력은 무엇일까요?</h2>
+            <div class="card">
+                <h3 class="text-2xl font-semibold accent-text mb-4">경쟁사 비교</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">기능</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SPEAK</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">독해학교</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">FICO</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-[#0077B6] uppercase tracking-wider">ANSER (자사)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">구문독해 분석</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">❌</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">❌</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">△ <span class="text-xs">(결과만 제공)</span></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center font-bold text-green-600">✔️ <span class="text-xs">(사용자 직접)</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">OCR (외부자료 인식)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">❌</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">❌</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">❌</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center font-bold text-green-600">✔️</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">학생 성취도 분석</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">❌</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">❌</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">❌</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center font-bold text-green-600">✔️</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">교육기관 연계</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">❌</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">❌</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">❌</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center font-bold text-green-600">✔️</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-6">
+                    <h3 class="text-xl font-semibold text-[#0077B6] mb-2">ANSER의 차별점:</h3>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>사용자가 <strong class="accent-text">'직접'</strong> 문장 분석 및 직독직해를 진행하여 실질적인 독해력 향상</li>
+                        <li>내신 시험 등 <strong class="accent-text">직접적인 시험 대비</strong> 가능</li>
+                        <li>교육 기관과의 연계를 통한 <strong class="accent-text">B2B 서비스 확장</strong> 용이</li>
+                        <li><strong class="accent-text">특허 출원 완료:</strong> "거대 언어 모델 기반의 인공지능 구문 독해 피드백 시스템" (출원번호: 10-2025-0047756)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="business" class="mb-12">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">ANSER의 성장 동력: 비즈니스 모델과 성과</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="text-2xl font-semibold accent-text mb-4">수익 모델</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="text-xl font-bold text-[#0077B6]">B2C (개인 학생/학부모)</h4>
+                            <p>월 구독료: <strong class="accent-text">15,000원</strong> (예상)</p>
+                            <p class="text-sm">(월 50문장 무료 사용 후 유료 전환)</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-[#0077B6]">B2B/G (교육 기관)</h4>
+                            <p>학생 1인당 월 구독료: <strong class="accent-text">10,000원</strong> (예상, 최소 30명)</p>
+                            <p class="text-sm">(학생 관리 대시보드 제공)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="text-2xl font-semibold accent-text mb-4">주요 성과 (MVP)</h3>
+                     <ul class="list-disc list-inside space-y-1">
+                        <li>고객 설문 기반 <strong class="text-[#0077B6]">베타 버전 개발 완료</strong></li>
+                        <li>OCR 인식 정확률 <strong class="text-[#0077B6]">87%</strong>, 분석 정확도 <strong class="text-[#0077B6]">92%</strong> 달성</li>
+                        <li>LLM 기반 자체 구문독해 알고리즘 개발</li>
+                        <li>베타 테스트 사용자 <strong class="text-[#0077B6]">전원 유료 구독 의사</strong> 확인</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card mt-8">
+                <h3 class="text-2xl font-bold section-title mb-4 text-center">예상 매출 성장 (단위: 억원)</h3>
+                <div class="chart-container h-72 md:h-80">
+                    <canvas id="revenueProjectionChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="mb-12">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">ANSER의 미래: 교육 혁신을 향한 여정</h2>
+            <div class="card">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold accent-bg text-white px-4 py-2 rounded-md inline-block mb-2">단기 (2025년)</h3>
+                        <ul class="list-disc list-inside ml-4 space-y-1">
+                            <li>베타 테스트 피드백 기반 앱 기능 개선 및 디자인 고도화</li>
+                            <li>iOS / Android 정식 서비스 론칭</li>
+                            <li>적극적인 B2C 마케팅 및 교육기관 B2B 제휴 확대 (이투스247, 토즈스터디센터 등)</li>
+                            <li><strong class="text-[#0077B6]">목표:</strong> 매출 1억 350만원, 고용 5명, 투자 유치 1억원</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold accent-bg text-white px-4 py-2 rounded-md inline-block mb-2">중기 (2026년)</h3>
+                        <ul class="list-disc list-inside ml-4 space-y-1">
+                            <li>영어 전문 교육 AI 교사 솔루션 개발</li>
+                            <li>강사/교사 대상 학생 관리 시스템 고도화</li>
+                            <li>B2B 마케팅 강화 및 시장 점유율 확대</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold accent-bg text-white px-4 py-2 rounded-md inline-block mb-2">장기 (2027년 이후)</h3>
+                        <ul class="list-disc list-inside ml-4 space-y-1">
+                            <li>중/고등학교 AI 영어 교과서 개발</li>
+                            <li>학생 성취도 통합 관리 시스템 구축</li>
+                            <li>글로벌 시장 진출 준비 (아시아 국가 타겟)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="funding" class="mb-12">
+            <h2 class="text-3xl font-bold section-title mb-8 text-center">함께 성장할 투자자를 찾습니다</h2>
+            <div class="card">
+                <h3 class="text-2xl font-semibold accent-text mb-4 text-center">자금 소요 계획 (총 1억원 목표)</h3>
+                <div class="chart-container h-80 md:h-96">
+                    <canvas id="fundingAllocationChart"></canvas>
+                </div>
+                 <div class="mt-6 text-center">
+                    <p class="text-lg">확보된 자금은 <strong class="text-[#0077B6]">기술 고도화, 마케팅 강화, 우수 인력 확보</strong> 등에 활용하여 ANSER의 빠른 성장을 이끌겠습니다.</p>
+                    <p class="mt-2">현재 다수 AC와 Pre-seed 투자 유치를 논의 중입니다.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="accent-bg text-white py-8 text-center">
+        <p class="text-lg">Vision for Visions: ANSER와 함께 영어 학습의 미래를 만들어갑니다.</p>
+        <p class="mt-2">문의: isli0819@naver.com</p>
+    </footer>
+
+    <script>
+        const processLabel = (label) => {
+            if (label.length > 16) {
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + word).length > 16 && currentLine.length > 0) {
+                        lines.push(currentLine.trim());
+                        currentLine = word + ' ';
+                    } else {
+                        currentLine += word + ' ';
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            }
+            return label;
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        // Global Market Chart
+        const globalMarketCtx = document.getElementById('globalMarketChart').getContext('2d');
+        new Chart(globalMarketCtx, {
+            type: 'line',
+            data: {
+                labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032', '2033'].map(processLabel),
+                datasets: [{
+                    label: '글로벌 영어 학습 시장 규모 (십억 USD)',
+                    data: [13.4, 16.3, 20.0, 24.4, 29.8, 36.4, 44.4, 54.2, 66.1, 79.0], // Example data based on typical CAGR, ending at 79B
+                    borderColor: '#0077B6',
+                    backgroundColor: 'rgba(0, 119, 182, 0.2)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: '시장 규모 (십억 USD)'}
+                    },
+                    x: {
+                         title: { display: true, text: '연도'}
+                    }
+                },
+                plugins: {
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+
+        // Revenue Projection Chart
+        const revenueCtx = document.getElementById('revenueProjectionChart').getContext('2d');
+        new Chart(revenueCtx, {
+            type: 'bar',
+            data: {
+                labels: ['2025년 (3개월)', '2026년', '2027년'].map(processLabel),
+                datasets: [{
+                    label: '예상 매출 (억원)',
+                    data: [1.035, 12.96, 39.0],
+                    backgroundColor: ['#ADE8F4', '#90E0EF', '#00B4D8'],
+                    borderColor: ['#0077B6', '#0077B6', '#0077B6'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: '매출액 (억원)'}
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { title: tooltipTitleCallback } }
+                }
+            }
+        });
+        
+        // Funding Allocation Chart
+        const fundingCtx = document.getElementById('fundingAllocationChart').getContext('2d');
+        new Chart(fundingCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['인건비 (8,908만)', '기계장치비 (500만)', '광고선전비 (300만)', '지급수수료 등 (291만)'].map(processLabel),
+                datasets: [{
+                    label: '자금 활용 계획 (백만원)',
+                    data: [89.08, 5.00, 3.00, 2.91], // 금액을 백만원 단위로 통일
+                    backgroundColor: ['#0077B6', '#00B4D8', '#90E0EF', '#ADE8F4'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: { 
+                        callbacks: { 
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed.toFixed(2) + ' 백만원';
+                                }
+                                return label;
+                            }
+                        } 
+                    },
+                    legend: {
+                        position: 'bottom',
+                         labels: {
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                if (data.labels.length && data.datasets.length) {
+                                    return data.labels.map(function(label, i) {
+                                        const meta = chart.getDatasetMeta(0);
+                                        const style = meta.controller.getStyle(i);
+                                        
+                                        let textLabel = label;
+                                        if (Array.isArray(label)) {
+                                            textLabel = label.join(' ');
+                                        }
+
+                                        return {
+                                            text: textLabel,
+                                            fillStyle: style.backgroundColor,
+                                            strokeStyle: style.borderColor,
+                                            lineWidth: style.borderWidth,
+                                            hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                            index: i
+                                        };
+                                    });
+                                }
+                                return [];
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
